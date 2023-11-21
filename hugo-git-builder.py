@@ -15,8 +15,10 @@ import sys
 import json
 from datetime import datetime
 
-tmp_dir = '/var/tmp/hgb-tmp1234'
-hugo_pgm = '/home/linuxbrew/.linuxbrew/bin/hugo'
+#tmp_dir = '/var/tmp/hgb-tmp1234'
+tmp_dir = '/home/srk/tmp/hgb-tmp1234'
+# hugo_pgm = '/home/linuxbrew/.linuxbrew/bin/hugo'
+hugo_pgm = '/snap/bin/hugo'
 
 def main():
     print('** hugo git builder - ', datetime.now())
@@ -47,9 +49,12 @@ def deploy_site(website, site_conf):
     os.system('git -C ' + site_conf['git_repo'] +
               ' archive ' + site_conf['git_branch'] +
               ' | (cd ' + tmp_dir + ' && tar xf -)')
-    os.system('cd ' + tmp_dir +
-              ' && cd ' + site_conf['git_site_dir'] +
-              ' && ' + hugo_pgm + ' --cleanDestinationDir -d ' + site_conf['website_dir'])
+    #os.system('git -C ' + site_conf['git_repo'] + ' archive ' + site_conf['git_branch'] + ' --prefix=' + tmp_dir)
+    #os.system('cd ' + tmp_dir +
+    #          ' && cd ' + site_conf['git_site_dir'] +
+    #          ' && ' + hugo_pgm + ' --cleanDestinationDir -d ' + site_conf['website_dir'])
+    os.system('cd ' + tmp_dir + ' && cd ' + site_conf['git_site_dir'] + ' && ' + hugo_pgm )
+    os.system('rsync -a --delete ' + tmp_dir + '/public/ ' + site_conf['website_dir'])
     os.system('rm -rf ' + tmp_dir)
 
 if __name__ == '__main__':
