@@ -10,6 +10,16 @@ Mark code sections with ':tangle no' to exclude them from export.
 This is an attempt to use an org file to do a form of literate
 programming.  Will need to add more about info...
 
+This attempt is beginning with an existing program that has been
+imported into this literate format.  As such it is not very 'literate'
+yet.  Part of the motivation for doing this is that I need to go back
+and rework parts of the program to be a little more flexible.  As I
+relearn how the program works I intend to either capture that in the
+commentary or improve how it works (and capture that).  I'm also
+prepare to post this publicly as possible a useful tool for other Hugo
+users.  It may be useful talk about how I am transforming the program
+through multiple post?
+
 * Preamble
 
 Information about the program that will be exported into the code's
@@ -47,51 +57,77 @@ where it has come from.
   
 #+end_src
 
-* Testing
+* Initialize variable
 
+Probably need to read these values from a config file
 
+#+begin_src python
 
-#tmp_dir = '/var/tmp/hgb-tmp1234'
-tmp_dir = '/home/srk/tmp/hgb-tmp1234'
-# hugo_pgm = '/home/linuxbrew/.linuxbrew/bin/hugo'
-hugo_pgm = '/snap/bin/hugo'
+  #tmp_dir = '/var/tmp/hgb-tmp1234'
+  tmp_dir = '/home/srk/tmp/hgb-tmp1234'
+  # hugo_pgm = '/home/linuxbrew/.linuxbrew/bin/hugo'
+  hugo_pgm = '/snap/bin/hugo'
 
-def main():
-    print('** hugo git builder - ', datetime.now())
-    if len(sys.argv) > 1:
-        try:
-            with open(sys.argv[1]) as config_src_file:
-                sites_config = json.load(config_src_file)
-        except FileNotFoundError:
-            print('ERROR: Site config file not found')
-            return
-    else:
-        print('ERROR: No parameters privded.')
-        return
-    if len(sys.argv) > 2:
-        cur_site = sys.argv[2]
-        for site_key in list (sites_config):
-            if site_key == cur_site:
-                deploy_site(site_key, sites_config[site_key])
-                return
-        print('ERROR: Site not found in config file.')
-        return
-    for site_key in list(sites_config):
-        deploy_site(site_key, sites_config[site_key])
+#+end_src
 
-def deploy_site(website, site_conf):
-    print('Deploying website ' + website)
-    os.system('mkdir ' + tmp_dir)
-    os.system('git -C ' + site_conf['git_repo'] +
-              ' archive ' + site_conf['git_branch'] +
-              ' | (cd ' + tmp_dir + ' && tar xf -)')
-    #os.system('git -C ' + site_conf['git_repo'] + ' archive ' + site_conf['git_branch'] + ' --prefix=' + tmp_dir)
-    #os.system('cd ' + tmp_dir +
-    #          ' && cd ' + site_conf['git_site_dir'] +
-    #          ' && ' + hugo_pgm + ' --cleanDestinationDir -d ' + site_conf['website_dir'])
-    os.system('cd ' + tmp_dir + ' && cd ' + site_conf['git_site_dir'] + ' && ' + hugo_pgm )
-    os.system('rsync -a --delete ' + tmp_dir + '/' + site_conf['git_site_dir'] + '/public/ ' + site_conf['website_dir'])
-    os.system('rm -rf ' + tmp_dir)
+* Main Loop
 
-if __name__ == '__main__':
+Probably too much in main at the moment
+
+#+begin_src python
+
+  def main():
+      print('** hugo git builder - ', datetime.now())
+      if len(sys.argv) > 1:
+          try:
+              with open(sys.argv[1]) as config_src_file:
+                  sites_config = json.load(config_src_file)
+          except FileNotFoundError:
+              print('ERROR: Site config file not found')
+              return
+      else:
+          print('ERROR: No parameters privded.')
+          return
+      if len(sys.argv) > 2:
+          cur_site = sys.argv[2]
+          for site_key in list (sites_config):
+              if site_key == cur_site:
+                  deploy_site(site_key, sites_config[site_key])
+                  return
+          print('ERROR: Site not found in config file.')
+          return
+      for site_key in list(sites_config):
+          deploy_site(site_key, sites_config[site_key])
+
+#+end_src
+
+* Function: deploy_site
+
+#+begin_src python
+
+  def deploy_site(website, site_conf):
+      print('Deploying website ' + website)
+      os.system('mkdir ' + tmp_dir)
+      os.system('git -C ' + site_conf['git_repo'] +
+                ' archive ' + site_conf['git_branch'] +
+                ' | (cd ' + tmp_dir + ' && tar xf -)')
+      #os.system('git -C ' + site_conf['git_repo'] + ' archive ' + site_conf['git_branch'] + ' --prefix=' + tmp_dir)
+      #os.system('cd ' + tmp_dir +
+      #          ' && cd ' + site_conf['git_site_dir'] +
+      #          ' && ' + hugo_pgm + ' --cleanDestinationDir -d ' + site_conf['website_dir'])
+      os.system('cd ' + tmp_dir + ' && cd ' + site_conf['git_site_dir'] + ' && ' + hugo_pgm )
+      os.system('rsync -a --delete ' + tmp_dir + '/' + site_conf['git_site_dir'] + '/public/ ' + site_conf['website_dir'])
+      os.system('rm -rf ' + tmp_dir)
+
+#+end_src
+
+* EOF Call Main Loop
+
+Note putting this here probably break script until all the remaining code is migrated to be above this code
+
+#+begin_src python
+
+  if __name__ == '__main__':
                   main()
+
+#+end_src
