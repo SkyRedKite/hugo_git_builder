@@ -23,7 +23,7 @@ through multiple post?
 * Preamble
 
 Information about the program that will be exported into the code's
-preamble so that any looking at the resultant code where understand
+preamble so that anyone looking at the resultant code where understand
 where it has come from.
 
 #+begin_src python
@@ -48,6 +48,13 @@ where it has come from.
 
 * Import libraries
 
+This is a simple script and as such does need much in the way of
+library support.  os and sys are there for basic file system tasks (do
+I need both?).  The config file is in json format so that is included
+in (I wonder about doing a library that would work with config
+regardless whether they are in json, toml, etc. format; could be a key
+component of the json editor idea I have).  And datatime is imported for ??
+
 #+begin_src python
 
   import os
@@ -70,7 +77,46 @@ Probably need to read these values from a config file
 
 #+end_src
 
-* Main Loop
+* Load parameters
+
+Here is some basic code to load the parameters for the script.  Since
+there are only a copy of parameters I am not using any library to
+process the command line parameters.
+
+A function for processing the command line for script parameters.
+
+The script only takes two positional parameters:
+
+- The first parameter is required and is the path and name of a JSON
+  config file.
+- The second parameter is option.  If provided it should reference a
+  site defined in the config file and would be the only site processed
+  from the config file.
+
+If no valid parameters are provided, print a help screen and exit.
+
+The script first tests for their being at least one parameater and
+that it is a valid JSON file.  Then test for a second parameter.  Any
+invalid input calls a function to display an error message and a help
+screen.
+
+#+begin_src python
+
+  def process_commandline():
+      if len(sys.argv) > 1:
+          try:
+              with open(sys.argv[1]) as config_src_file:
+                  builder_config = json.load(config_src_file)
+          except FileNotFoundError:
+              # need to rework this into call a help display function (and maybe error code)
+              print('ERROR: Site config file not found')
+              return
+       else:
+           print('ERROR: Site config file not found')
+           return
+#+end_src
+
+Main Loop
 
 Probably too much in main at the moment
 
@@ -123,7 +169,7 @@ Probably too much in main at the moment
 
 * EOF Call Main Loop
 
-Note putting this here probably break script until all the remaining code is migrated to be above this code
+Standard closing lines for a Python script to call the main loop.
 
 #+begin_src python
 
