@@ -15,12 +15,23 @@ imported into this literate format.  As such it is not very 'literate'
 yet.  Part of the motivation for doing this is that I need to go back
 and rework parts of the program to be a little more flexible.  As I
 relearn how the program works I intend to either capture that in the
-commentary or improve how it works (and capture that).  I'm also
-prepare to post this publicly as possible a useful tool for other Hugo
-users.  It may be useful talk about how I am transforming the program
-through multiple post?
+commentary or improve how it works (and capture that).  I am also
+preparing to post this publicly as a possible useful tool for other
+Hugo users.  It may be useful talk about how I am transforming the
+program through multiple post?
 
-* Preamble
+** Purpose
+
+There are other ways (e.g. github actions) to achieve a similar
+purpose to what this file accomplishes, but not of them seem to
+address the specific use case and needs that I have.  The goals of
+this script are:
+
+- Gnerate a static website from a Hugo config
+- Run daily so that post could be finalized in advance with a spefic
+  publication date.
+
+* Code Preamble
 
 Information about the program that will be exported into the code's
 preamble so that anyone looking at the resultant code where understand
