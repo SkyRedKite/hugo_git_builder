@@ -23,7 +23,7 @@ program through multiple post?
 ** Purpose
 
 There are other ways (e.g. github actions) to achieve a similar
-purpose to what this file accomplishes, but not of them seem to
+purpose to what this file accomplishes, but none of them seem to
 address the specific use case and needs that I have.  The goals of
 this script are:
 
@@ -91,7 +91,7 @@ Probably need to read these values from a config file
 * Load parameters
 
 Here is some basic code to load the parameters for the script.  Since
-there are only a copy of parameters I am not using any library to
+there are only a couple of parameters I am not using any library to
 process the command line parameters.
 
 A function for processing the command line for script parameters.
@@ -100,16 +100,16 @@ The script only takes two positional parameters:
 
 - The first parameter is required and is the path and name of a JSON
   config file.
-- The second parameter is option.  If provided it should reference a
+- The second parameter is optional.  If provided it should reference a
   site defined in the config file and would be the only site processed
   from the config file.
 
 If no valid parameters are provided, print a help screen and exit.
 
 The script first tests for their being at least one parameater and
-that it is a valid JSON file.  Then test for a second parameter.  Any
-invalid input calls a function to display an error message and a help
-screen.
+that it is a valid JSON file.  Then it tests for a second parameter.
+Any invalid input calls a function to display an error message and a
+help screen.
 
 #+begin_src python
 
@@ -122,12 +122,12 @@ screen.
               # need to rework this into call a help display function (and maybe error code)
               print('ERROR: Site config file not found')
               return
-       else:
-           print('ERROR: Site config file not found')
-           return
+      else:
+          print('ERROR: Site config file not found')
+          return
 #+end_src
 
-Main Loop
+* Main Loop
 
 Probably too much in main at the moment
 
@@ -135,6 +135,7 @@ Probably too much in main at the moment
 
   def main():
       print('** hugo git builder - ', datetime.now())
+      # sites_config = process_commandline()
       if len(sys.argv) > 1:
           try:
               with open(sys.argv[1]) as config_src_file:
