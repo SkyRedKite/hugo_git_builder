@@ -1,5 +1,7 @@
 #+title: Hugo Git Builder
 #+property: header-args:python :tangle test.py
+#+property: header-args:python :tangle-mode 'a+x'
+#+property: header-args:python :shebang '#!/usr/bin/python3'
 #+startup: overview
 
 Run M-x org-babel-tangle (C-c C-v t) to generate init.el file.
