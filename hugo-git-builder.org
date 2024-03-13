@@ -1,8 +1,5 @@
 #+title: Hugo Git Builder
-#+property: header-args:python :tangle test.py
-#+property: header-args:python :tangle-mode 'a+x'
-#+property: header-args:python :shebang '#!/usr/bin/python3'
-#+startup: overview
+#+STARTUP: show3levels
 
 Run M-x org-babel-tangle (C-c C-v t) to generate init.el file.
 Mark code sections with ':tangle no' to exclude them from export.
@@ -33,13 +30,20 @@ this script are:
 - Run daily so that post could be finalized in advance with a spefic
   publication date.
 
-* Code Preamble
+
+* test.py
+:PROPERTIES:
+:header-args:python: :tangle test.py :tangle-mode o755
+:END:
+
+** Code Preamble
 
 Information about the program that will be exported into the code's
 preamble so that anyone looking at the resultant code where understand
 where it has come from.
 
 #+begin_src python
+
   #!/usr/bin/python3
   #
   # hugo git builder
@@ -59,7 +63,7 @@ where it has come from.
 
 #+end_src
 
-* Import libraries
+** Import libraries
 
 This is a simple script and as such does need much in the way of
 library support.  os and sys are there for basic file system tasks (do
@@ -77,7 +81,7 @@ component of the json editor idea I have).  And datatime is imported for ??
   
 #+end_src
 
-* Initialize variable
+** Initialize variable
 
 Probably need to read these values from a config file
 
@@ -90,7 +94,7 @@ Probably need to read these values from a config file
 
 #+end_src
 
-* Load parameters
+** Load parameters
 
 Here is some basic code to load the parameters for the script.  Since
 there are only a couple of parameters I am not using any library to
@@ -129,7 +133,7 @@ help screen.
           return
 #+end_src
 
-* Main Loop
+** Main Loop
 
 Probably too much in main at the moment
 
@@ -161,7 +165,7 @@ Probably too much in main at the moment
 
 #+end_src
 
-* Function: deploy_site
+** Function: deploy_site
 
 #+begin_src python
 
@@ -181,7 +185,7 @@ Probably too much in main at the moment
 
 #+end_src
 
-* EOF Call Main Loop
+** EOF Call Main Loop
 
 Standard closing lines for a Python script to call the main loop.
 
