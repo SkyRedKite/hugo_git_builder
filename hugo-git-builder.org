@@ -39,7 +39,7 @@ this script are:
 ** Code Preamble
 
 Information about the program that will be exported into the code's
-preamble so that anyone looking at the resultant code where understand
+preamble so that anyone looking at the resultant code will understand
 where it has come from.
 
 #+begin_src python
